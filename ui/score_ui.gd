@@ -1,5 +1,5 @@
 class_name ScoreUI
-extends Control
+extends CanvasLayer
 
 const _MESSAGES: Dictionary = {
 	"ready": "READY",
