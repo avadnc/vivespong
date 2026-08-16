@@ -115,3 +115,52 @@ func test_second_goal_does_not_double_count_same_frame() -> void:
 	assert_eq(main.match_state.player1_score, 1)
 	assert_eq(main.match_state.player2_score, 0)
 	assert_eq(main.phase, main.MatchPhase.SERVING)
+
+
+func test_tenth_goal_goes_to_won() -> void:
+	var main = _wired_main()
+	main.begin_match()
+	main.tick_phase(_Court.SERVE_DELAY)
+	main.tick_phase(_Court.GO_MESSAGE_DURATION)
+	for _i in 9:
+		main.handle_goal(1)
+		main.tick_phase(_Court.SERVE_DELAY)
+	main.handle_goal(1)
+	assert_eq(main.phase, main.MatchPhase.WON)
+	assert_eq(main.match_state.winner, 1)
+	assert_true(main._hud._message.text.contains("PLAYER 1 WINS"))
+	assert_true(main._hud._message.text.contains("PRESS START"))
+	assert_false(main._ball.is_live)
+	assert_false(main._p1.input_enabled)
+	assert_false(main._p2.input_enabled)
+
+
+func test_start_only_works_when_won() -> void:
+	var main = _wired_main()
+	main.begin_match()
+	main.tick_phase(_Court.SERVE_DELAY)
+	main.tick_phase(_Court.GO_MESSAGE_DURATION)
+	main.handle_goal(1)
+	main.tick_phase(_Court.SERVE_DELAY)
+	assert_eq(main.phase, main.MatchPhase.PLAYING)
+	assert_eq(main.match_state.player1_score, 1)
+	main.handle_start_pressed()
+	assert_eq(main.match_state.player1_score, 1)
+	assert_eq(main.match_state.player2_score, 0)
+	assert_eq(main.phase, main.MatchPhase.PLAYING)
+	for _i in 8:
+		main.handle_goal(1)
+		main.tick_phase(_Court.SERVE_DELAY)
+	main.handle_goal(1)
+	assert_eq(main.phase, main.MatchPhase.WON)
+	var same_state = main.match_state
+	main.handle_start_pressed()
+	assert_true(main.match_state == same_state)
+	assert_eq(main.match_state.player1_score, 0)
+	assert_eq(main.match_state.player2_score, 0)
+	assert_eq(main.match_state.winner, 0)
+	assert_eq(main.phase, main.MatchPhase.READY)
+	assert_true(main._p1.input_enabled)
+	assert_true(main._p2.input_enabled)
+	assert_eq(main._hud._message.text, "READY")
+	assert_false(main._ball.is_live)

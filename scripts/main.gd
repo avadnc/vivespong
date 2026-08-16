@@ -69,6 +69,7 @@ func handle_goal(scoring_player: int) -> void:
 		_hud.set_scores(match_state.player1_score, match_state.player2_score)
 	if match_state.is_finished():
 		phase = MatchPhase.WON
+		_set_paddles_input_enabled(false)
 		if _hud != null:
 			_hud.show_win(scoring_player)
 		return
@@ -83,12 +84,19 @@ func handle_goal(scoring_player: int) -> void:
 
 
 func handle_start_pressed() -> void:
-	pass
+	if phase != MatchPhase.WON:
+		return
+	if match_state != null:
+		match_state.reset()
+	_set_paddles_input_enabled(true)
+	begin_match()
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("start"):
 		handle_start_pressed()
+		if get_viewport() != null:
+			get_viewport().set_input_as_handled()
 
 
 func _process(delta: float) -> void:
@@ -100,6 +108,13 @@ func _enter_countdown_go() -> void:
 	_phase_timer = 0.0
 	if _hud != null:
 		_hud.show_message("go")
+
+
+func _set_paddles_input_enabled(enabled: bool) -> void:
+	if _p1 != null:
+		_p1.input_enabled = enabled
+	if _p2 != null:
+		_p2.input_enabled = enabled
 
 
 func _enter_playing_and_serve() -> void:
