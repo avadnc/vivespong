@@ -5,39 +5,48 @@
 [ext_resource type="PackedScene" uid="uid://f2c7m8x0wjey" path="res://scenes/Paddle.tscn" id="3_c01mt"]
 [ext_resource type="Script" uid="uid://w6n3cscbh15e" path="res://ui/score_ui.gd" id="4_nxtc6"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jlsqs"]
-sky_top_color = Color(0.38, 0.45, 0.55, 1)
-sky_horizon_color = Color(0.65, 0.67, 0.7, 1)
-ground_bottom_color = Color(0.2, 0.17, 0.13, 1)
-ground_horizon_color = Color(0.65, 0.67, 0.7, 1)
-
-[sub_resource type="Sky" id="Sky_q8u5g"]
-sky_material = SubResource("ProceduralSkyMaterial_jlsqs")
-
 [sub_resource type="Environment" id="Environment_lhr70"]
 background_mode = 1
 background_color = Color(0.02745098, 0.043137256, 0.07058824, 1)
-sky = SubResource("Sky_q8u5g")
 ambient_light_source = 1
 ambient_light_color = Color(0.101960786, 0.13333334, 0.1882353, 1)
 ambient_light_energy = 0.35
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.043137256, 0.10980392, 0.14117648, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_wp0k4"]
+material = SubResource("StandardMaterial3D_floor")
 size = Vector3(12.6, 0.1, 20.6)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
+albedo_color = Color(0.101960786, 0.41568628, 0.47843137, 1)
+emission_enabled = true
+emission = Color(0.16470589, 0.83137256, 0.9098039, 1)
+emission_energy_multiplier = 0.35
+
 [sub_resource type="BoxMesh" id="BoxMesh_bjd11"]
+material = SubResource("StandardMaterial3D_wall")
 size = Vector3(0.3, 0.8, 20.6)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qmy6f"]
 size = Vector3(0.3, 0.8, 20.6)
 
 [sub_resource type="BoxMesh" id="BoxMesh_mwfav"]
+material = SubResource("StandardMaterial3D_wall")
 size = Vector3(0.3, 0.8, 20.6)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3p2gp"]
 size = Vector3(0.3, 0.8, 20.6)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_center"]
+albedo_color = Color(0.84705883, 0.9019608, 0.91764706, 1)
+emission_enabled = true
+emission = Color(0.84705883, 0.9019608, 0.91764706, 1)
+emission_energy_multiplier = 0.2
+
 [sub_resource type="BoxMesh" id="BoxMesh_cvmbd"]
+material = SubResource("StandardMaterial3D_center")
 size = Vector3(12, 0.02, 0.08)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ft6cd"]
@@ -46,145 +55,171 @@ size = Vector3(12.6, 1.2, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_bb450"]
 size = Vector3(12.6, 1.2, 1)
 
-[node name="Main" type="Node3D" unique_id=1874643408]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_paddle_p2"]
+albedo_color = Color(0.8862745, 0.23137255, 0.5411765, 1)
+emission_enabled = true
+emission = Color(0.8862745, 0.23137255, 0.5411765, 1)
+emission_energy_multiplier = 0.25
+
+[node name="Main" type="Node3D"]
 script = ExtResource("1_rarhs")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1255343456]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_lhr70")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1910487218]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.8660254, -0.38302222, 0.32139382, 0, 0.64278764, 0.76604444, -0.5, -0.66341394, 0.5566704, 0, 0, 0)
 light_energy = 1.05
+shadow_enabled = false
 
-[node name="Arena" type="Node3D" parent="." unique_id=1500235889]
+[node name="Arena" type="Node3D" parent="."]
 
-[node name="Floor" type="MeshInstance3D" parent="Arena" unique_id=1230642725]
+[node name="Floor" type="MeshInstance3D" parent="Arena"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
 mesh = SubResource("BoxMesh_wp0k4")
 
-[node name="LeftWall" type="StaticBody3D" parent="Arena" unique_id=971329782 groups=["walls"]]
+[node name="LeftWall" type="StaticBody3D" parent="Arena" groups=["walls"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.15, 0.4, 0)
 collision_mask = 0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/LeftWall" unique_id=124564803]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/LeftWall"]
 mesh = SubResource("BoxMesh_bjd11")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/LeftWall" unique_id=248794764]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/LeftWall"]
 shape = SubResource("BoxShape3D_qmy6f")
 
-[node name="RightWall" type="StaticBody3D" parent="Arena" unique_id=1669711414 groups=["walls"]]
+[node name="RightWall" type="StaticBody3D" parent="Arena" groups=["walls"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.15, 0.4, 0)
 collision_mask = 0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/RightWall" unique_id=2033694777]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/RightWall"]
 mesh = SubResource("BoxMesh_mwfav")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/RightWall" unique_id=1062249697]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/RightWall"]
 shape = SubResource("BoxShape3D_3p2gp")
 
-[node name="CenterLine" type="MeshInstance3D" parent="Arena" unique_id=1305504762]
+[node name="CenterLine" type="MeshInstance3D" parent="Arena"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
 mesh = SubResource("BoxMesh_cvmbd")
 
-[node name="GoalPlayer1" type="Area3D" parent="Arena" unique_id=511497588 groups=["goals"]]
+[node name="GoalPlayer1" type="Area3D" parent="Arena" groups=["goals"]]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -10.5)
 collision_layer = 8
 collision_mask = 4
 monitorable = false
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/GoalPlayer1" unique_id=1752751015]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/GoalPlayer1"]
 shape = SubResource("BoxShape3D_ft6cd")
 
-[node name="GoalPlayer2" type="Area3D" parent="Arena" unique_id=628167711 groups=["goals"]]
+[node name="GoalPlayer2" type="Area3D" parent="Arena" groups=["goals"]]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 10.5)
 collision_layer = 8
 collision_mask = 4
 monitorable = false
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/GoalPlayer2" unique_id=1805903181]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/GoalPlayer2"]
 shape = SubResource("BoxShape3D_bb450")
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1007859784]
+[node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16, 18)
 current = true
 fov = 48.0
 
-[node name="Ball" parent="." unique_id=1689598831 instance=ExtResource("2_vcsgt")]
+[node name="Ball" parent="." instance=ExtResource("2_vcsgt")]
 unique_name_in_owner = true
 
-[node name="Player1" parent="." unique_id=1699462091 instance=ExtResource("3_c01mt")]
+[node name="Player1" parent="." instance=ExtResource("3_c01mt")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -9)
 
-[node name="Player2" parent="." unique_id=613373772 instance=ExtResource("3_c01mt")]
+[node name="Player2" parent="." instance=ExtResource("3_c01mt")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 9)
 player_id = 2
 
-[node name="UI" type="CanvasLayer" parent="." unique_id=1749671522]
+[node name="MeshInstance3D" parent="Player2" index="0"]
+material_override = SubResource("StandardMaterial3D_paddle_p2")
+
+[node name="UI" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
 script = ExtResource("4_nxtc6")
 
-[node name="Title" type="Label" parent="UI" unique_id=1997059014]
+[node name="Title" type="Label" parent="UI"]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -45.0
-offset_top = 16.0
-offset_right = 45.0
-offset_bottom = 39.0
-theme_override_font_sizes/font_size = 36
+offset_left = -200.0
+offset_top = 12.0
+offset_right = 200.0
+offset_bottom = 60.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.84705883, 0.9019608, 0.91764706, 1)
+theme_override_font_sizes/font_size = 40
 text = "VIVESPONG"
 horizontal_alignment = 1
 
-[node name="ScorePlayer1" type="Label" parent="UI" unique_id=1589856647]
+[node name="ScorePlayer1" type="Label" parent="UI"]
 unique_name_in_owner = true
-offset_left = 24.0
-offset_top = 24.0
-offset_right = 25.0
-offset_bottom = 47.0
-theme_override_font_sizes/font_size = 48
+anchors_preset = -1
+anchor_left = 0.28
+anchor_right = 0.28
+offset_left = -40.0
+offset_top = 20.0
+offset_right = 40.0
+offset_bottom = 84.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.09803922, 0.7764706, 0.83137256, 1)
+theme_override_font_sizes/font_size = 56
 text = "0"
+horizontal_alignment = 1
 
-[node name="ScorePlayer2" type="Label" parent="UI" unique_id=1452833343]
+[node name="ScorePlayer2" type="Label" parent="UI"]
 unique_name_in_owner = true
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -34.0
-offset_top = 24.0
-offset_right = -24.0
-offset_bottom = 47.0
-theme_override_font_sizes/font_size = 48
+anchors_preset = -1
+anchor_left = 0.72
+anchor_right = 0.72
+offset_left = -40.0
+offset_top = 20.0
+offset_right = 40.0
+offset_bottom = 84.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.8862745, 0.23137255, 0.5411765, 1)
+theme_override_font_sizes/font_size = 56
 text = "0"
-horizontal_alignment = 2
+horizontal_alignment = 1
 
-[node name="Message" type="Label" parent="UI" unique_id=1758511070]
+[node name="Message" type="Label" parent="UI"]
 unique_name_in_owner = true
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -0.5
-offset_top = -11.5
-offset_right = 0.5
-offset_bottom = 11.5
-theme_override_font_sizes/font_size = 32
+offset_left = -280.0
+offset_top = -40.0
+offset_right = 280.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.95686275, 0.9411765, 0.9019608, 1)
+theme_override_font_sizes/font_size = 36
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="FPS" type="Label" parent="UI" unique_id=305556149]
+[node name="FPS" type="Label" parent="UI"]
 unique_name_in_owner = true
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -17.0
-offset_top = -39.0
+offset_left = -200.0
+offset_top = -36.0
 offset_right = -16.0
-offset_bottom = -16.0
+offset_bottom = -12.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.84705883, 0.9019608, 0.91764706, 0.7)
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 2

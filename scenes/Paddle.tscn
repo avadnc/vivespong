@@ -2,20 +2,27 @@
 
 [ext_resource type="Script" uid="uid://q0yyk83x2ie5" path="res://scripts/paddle.gd" id="1_ry5ju"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_paddle"]
+albedo_color = Color(0.09803922, 0.7764706, 0.83137256, 1)
+emission_enabled = true
+emission = Color(0.09803922, 0.7764706, 0.83137256, 1)
+emission_energy_multiplier = 0.25
+
 [sub_resource type="BoxMesh" id="BoxMesh_6kxou"]
+material = SubResource("StandardMaterial3D_paddle")
 size = Vector3(2.4, 0.4, 0.3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jlx5f"]
 size = Vector3(2.4, 0.4, 0.3)
 
-[node name="Paddle" type="CharacterBody3D" unique_id=1699462091 groups=["paddles"]]
+[node name="Paddle" type="CharacterBody3D" groups=["paddles"]]
 collision_layer = 2
 collision_mask = 0
 motion_mode = 1
 script = ExtResource("1_ry5ju")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1344558802]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_6kxou")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1068118660]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_jlx5f")
