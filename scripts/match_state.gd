@@ -12,6 +12,12 @@ func is_finished() -> bool:
 	return winner != 0
 
 
+func reset() -> void:
+	player1_score = 0
+	player2_score = 0
+	winner = 0
+
+
 func score_goal(player: int) -> void:
 	if is_finished():
 		return
