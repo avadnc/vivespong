@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://dqak2yrfgetxj"]
+
+[ext_resource type="Script" uid="uid://bp4pb1hpali6i" path="res://scripts/ball.gd" id="1_d73vv"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ja1hk"]
+radius = 0.25
+height = 0.5
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ul5l2"]
+radius = 0.25
+
+[node name="Ball" type="CharacterBody3D" unique_id=1689598831 groups=["ball"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+collision_layer = 4
+collision_mask = 3
+motion_mode = 1
+script = ExtResource("1_d73vv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1933920877]
+mesh = SubResource("SphereMesh_ja1hk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=448703394]
+shape = SubResource("SphereShape3D_ul5l2")
