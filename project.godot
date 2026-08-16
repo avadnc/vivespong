@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="ClonePong"
+run/main_scene="res://scenes/Main.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -20,8 +21,10 @@ _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [display]
 
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
+window/stretch/aspect="keep"
 
 [editor_plugins]
 
@@ -64,6 +67,7 @@ player1_right={
 
 [physics]
 
+common/physics_ticks_per_second=60
 3d/physics_engine="Jolt Physics"
 
 [rendering]

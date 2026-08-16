@@ -1,0 +1,190 @@
+[gd_scene format=3 uid="uid://vqnxhoeew4tv"]
+
+[ext_resource type="Script" uid="uid://cgw0cfoi7wqlo" path="res://scripts/main.gd" id="1_rarhs"]
+[ext_resource type="PackedScene" uid="uid://dqak2yrfgetxj" path="res://scenes/Ball.tscn" id="2_vcsgt"]
+[ext_resource type="PackedScene" uid="uid://f2c7m8x0wjey" path="res://scenes/Paddle.tscn" id="3_c01mt"]
+[ext_resource type="Script" uid="uid://w6n3cscbh15e" path="res://ui/score_ui.gd" id="4_nxtc6"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jlsqs"]
+sky_top_color = Color(0.38, 0.45, 0.55, 1)
+sky_horizon_color = Color(0.65, 0.67, 0.7, 1)
+ground_bottom_color = Color(0.2, 0.17, 0.13, 1)
+ground_horizon_color = Color(0.65, 0.67, 0.7, 1)
+
+[sub_resource type="Sky" id="Sky_q8u5g"]
+sky_material = SubResource("ProceduralSkyMaterial_jlsqs")
+
+[sub_resource type="Environment" id="Environment_lhr70"]
+background_mode = 1
+background_color = Color(0.02745098, 0.043137256, 0.07058824, 1)
+sky = SubResource("Sky_q8u5g")
+ambient_light_source = 1
+ambient_light_color = Color(0.101960786, 0.13333334, 0.1882353, 1)
+ambient_light_energy = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_wp0k4"]
+size = Vector3(12.6, 0.1, 20.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bjd11"]
+size = Vector3(0.3, 0.8, 20.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qmy6f"]
+size = Vector3(0.3, 0.8, 20.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mwfav"]
+size = Vector3(0.3, 0.8, 20.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3p2gp"]
+size = Vector3(0.3, 0.8, 20.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cvmbd"]
+size = Vector3(12, 0.02, 0.08)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ft6cd"]
+size = Vector3(12.6, 1.2, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bb450"]
+size = Vector3(12.6, 1.2, 1)
+
+[node name="Main" type="Node3D" unique_id=1874643408]
+script = ExtResource("1_rarhs")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1255343456]
+environment = SubResource("Environment_lhr70")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1910487218]
+transform = Transform3D(0.8660254, -0.38302222, 0.32139382, 0, 0.64278764, 0.76604444, -0.5, -0.66341394, 0.5566704, 0, 0, 0)
+light_energy = 1.05
+
+[node name="Arena" type="Node3D" parent="." unique_id=1500235889]
+
+[node name="Floor" type="MeshInstance3D" parent="Arena" unique_id=1230642725]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("BoxMesh_wp0k4")
+
+[node name="LeftWall" type="StaticBody3D" parent="Arena" unique_id=971329782 groups=["walls"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.15, 0.4, 0)
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/LeftWall" unique_id=124564803]
+mesh = SubResource("BoxMesh_bjd11")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/LeftWall" unique_id=248794764]
+shape = SubResource("BoxShape3D_qmy6f")
+
+[node name="RightWall" type="StaticBody3D" parent="Arena" unique_id=1669711414 groups=["walls"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.15, 0.4, 0)
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/RightWall" unique_id=2033694777]
+mesh = SubResource("BoxMesh_mwfav")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/RightWall" unique_id=1062249697]
+shape = SubResource("BoxShape3D_3p2gp")
+
+[node name="CenterLine" type="MeshInstance3D" parent="Arena" unique_id=1305504762]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+mesh = SubResource("BoxMesh_cvmbd")
+
+[node name="GoalPlayer1" type="Area3D" parent="Arena" unique_id=511497588 groups=["goals"]]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -10.5)
+collision_layer = 8
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/GoalPlayer1" unique_id=1752751015]
+shape = SubResource("BoxShape3D_ft6cd")
+
+[node name="GoalPlayer2" type="Area3D" parent="Arena" unique_id=628167711 groups=["goals"]]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 10.5)
+collision_layer = 8
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/GoalPlayer2" unique_id=1805903181]
+shape = SubResource("BoxShape3D_bb450")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1007859784]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16, 18)
+current = true
+fov = 48.0
+
+[node name="Ball" parent="." unique_id=1689598831 instance=ExtResource("2_vcsgt")]
+unique_name_in_owner = true
+
+[node name="Player1" parent="." unique_id=1699462091 instance=ExtResource("3_c01mt")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -9)
+
+[node name="Player2" parent="." unique_id=613373772 instance=ExtResource("3_c01mt")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 9)
+player_id = 2
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1749671522]
+unique_name_in_owner = true
+script = ExtResource("4_nxtc6")
+
+[node name="Title" type="Label" parent="UI" unique_id=1997059014]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -45.0
+offset_top = 16.0
+offset_right = 45.0
+offset_bottom = 39.0
+theme_override_font_sizes/font_size = 36
+text = "VIVESPONG"
+horizontal_alignment = 1
+
+[node name="ScorePlayer1" type="Label" parent="UI" unique_id=1589856647]
+unique_name_in_owner = true
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 25.0
+offset_bottom = 47.0
+theme_override_font_sizes/font_size = 48
+text = "0"
+
+[node name="ScorePlayer2" type="Label" parent="UI" unique_id=1452833343]
+unique_name_in_owner = true
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -34.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 47.0
+theme_override_font_sizes/font_size = 48
+text = "0"
+horizontal_alignment = 2
+
+[node name="Message" type="Label" parent="UI" unique_id=1758511070]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -0.5
+offset_top = -11.5
+offset_right = 0.5
+offset_bottom = 11.5
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+
+[node name="FPS" type="Label" parent="UI" unique_id=305556149]
+unique_name_in_owner = true
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -17.0
+offset_top = -39.0
+offset_right = -16.0
+offset_bottom = -16.0
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 2

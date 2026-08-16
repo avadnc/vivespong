@@ -13,6 +13,32 @@ var _phase_timer: float = 0.0
 var _serve_toward_player: int = 2
 
 
+func _ready() -> void:
+	match_state = MatchState.new()
+	_hud = %UI as ScoreUI
+	if _hud != null:
+		_hud.setup_labels(
+			%ScorePlayer1 as Label,
+			%ScorePlayer2 as Label,
+			%Message as Label,
+			%FPS as Label
+		)
+	_p1 = %Player1 as Paddle
+	_p2 = %Player2 as Paddle
+	_ball = %Ball as Ball
+	_p1.player_id = 1
+	_p2.player_id = 2
+	_ball.reset_to_center()
+	(%GoalPlayer1 as Area3D).body_entered.connect(_on_goal_body_entered.bind(2))
+	(%GoalPlayer2 as Area3D).body_entered.connect(_on_goal_body_entered.bind(1))
+	var camera: Camera3D = $Camera3D
+	camera.position = CourtExtents.CAMERA_POSITION
+	camera.fov = CourtExtents.CAMERA_FOV
+	camera.current = true
+	camera.look_at(CourtExtents.CAMERA_LOOK_AT)
+	begin_match()
+
+
 func configure_for_test(
 	p_ball: Ball,
 	p_hud: ScoreUI,
@@ -55,6 +81,16 @@ func tick_phase(delta: float) -> void:
 				_enter_playing_and_serve()
 		MatchPhase.PLAYING, MatchPhase.WON:
 			pass
+
+
+func _on_goal_body_entered(body: Node3D, scoring_player: int) -> void:
+	if body is Ball:
+		handle_goal(scoring_player)
+		return
+	if body != null and body.is_in_group("ball"):
+		handle_goal(scoring_player)
+		return
+	push_warning("VivesPongMain: goal body_entered ignored for %s" % str(body))
 
 
 func handle_goal(scoring_player: int) -> void:
@@ -101,6 +137,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 	tick_phase(delta)
+	if _hud != null:
+		var fps: int = Engine.get_frames_per_second()
+		_hud.set_perf(fps, delta * 1000.0)
 
 
 func _enter_countdown_go() -> void:
