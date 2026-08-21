@@ -184,6 +184,8 @@ func test_select_one_player_starts_vs_cpu() -> void:
 	assert_true(main._p1.input_enabled)
 	assert_false(main._p2.input_enabled)
 	assert_eq(main._hud._message.text, "READY")
+	assert_eq(main._p1.get_left_action(), "player2_left")
+	assert_eq(main._p1.get_right_action(), "player2_right")
 
 
 func test_select_two_players_enables_p2() -> void:
@@ -194,6 +196,10 @@ func test_select_two_players_enables_p2() -> void:
 	assert_eq(main.phase, main.MatchPhase.READY)
 	assert_true(main._p1.input_enabled)
 	assert_true(main._p2.input_enabled)
+	assert_eq(main._p1.get_left_action(), "player1_left")
+	assert_eq(main._p1.get_right_action(), "player1_right")
+	assert_eq(main._p2.get_left_action(), "player2_left")
+	assert_eq(main._p2.get_right_action(), "player2_right")
 
 
 func test_select_player_count_ignored_when_playing() -> void:

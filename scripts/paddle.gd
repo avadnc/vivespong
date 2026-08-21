@@ -6,6 +6,8 @@ extends CharacterBody3D
 @export var input_enabled: bool = true
 
 var home_z: float = 0.0
+var move_left_action: String = ""
+var move_right_action: String = ""
 
 
 func _ready() -> void:
@@ -17,10 +19,25 @@ func _physics_process(delta: float) -> void:
 	physics_step(delta)
 
 
+func bind_move_actions(left_action: String, right_action: String) -> void:
+	move_left_action = left_action
+	move_right_action = right_action
+
+
+func get_left_action() -> String:
+	if not move_left_action.is_empty():
+		return move_left_action
+	return "player1_left" if player_id == 1 else "player2_left"
+
+
+func get_right_action() -> String:
+	if not move_right_action.is_empty():
+		return move_right_action
+	return "player1_right" if player_id == 1 else "player2_right"
+
+
 func get_move_axis() -> float:
-	var left_action: String = "player1_left" if player_id == 1 else "player2_left"
-	var right_action: String = "player1_right" if player_id == 1 else "player2_right"
-	return Input.get_axis(left_action, right_action)
+	return Input.get_axis(get_left_action(), get_right_action())
 
 
 func clamp_x(x: float) -> float:

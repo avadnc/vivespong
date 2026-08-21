@@ -41,6 +41,21 @@ func test_apply_axis_moves_only_x() -> void:
 	assert_true(is_equal_approx(p.global_position.z, 0.0), "z")
 
 
+func test_player1_defaults_to_ad_actions() -> void:
+	var p: CharacterBody3D = _make_paddle()
+	p.player_id = 1
+	assert_eq(p.get_left_action(), "player1_left")
+	assert_eq(p.get_right_action(), "player1_right")
+
+
+func test_bind_move_actions_overrides_defaults() -> void:
+	var p: CharacterBody3D = _make_paddle()
+	p.player_id = 1
+	p.bind_move_actions("player2_left", "player2_right")
+	assert_eq(p.get_left_action(), "player2_left")
+	assert_eq(p.get_right_action(), "player2_right")
+
+
 func test_physics_step_disabled_does_not_move() -> void:
 	var p: CharacterBody3D = _make_paddle()
 	p.input_enabled = false

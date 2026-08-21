@@ -77,6 +77,7 @@ func select_player_count(players: int) -> void:
 	if players != 1 and players != 2:
 		return
 	vs_cpu = players == 1
+	_bind_player_controls()
 	if match_state != null:
 		match_state.reset()
 	_set_paddles_input_enabled(true)
@@ -204,6 +205,16 @@ func _enter_countdown_go() -> void:
 	_phase_timer = 0.0
 	if _hud != null:
 		_hud.show_message("go")
+
+
+func _bind_player_controls() -> void:
+	if _p1 != null:
+		if vs_cpu:
+			_p1.bind_move_actions("player2_left", "player2_right")
+		else:
+			_p1.bind_move_actions("player1_left", "player1_right")
+	if _p2 != null:
+		_p2.bind_move_actions("player2_left", "player2_right")
 
 
 func _set_paddles_input_enabled(enabled: bool) -> void:
