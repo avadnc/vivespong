@@ -9,6 +9,7 @@ const _MESSAGES: Dictionary = {
 	"p1_wins": "PLAYER 1 WINS",
 	"p2_wins": "PLAYER 2 WINS",
 	"press_start": "PRESS START",
+	"mode_select": "1  VS CPU\n2  TWO PLAYERS",
 	"clear": "",
 }
 

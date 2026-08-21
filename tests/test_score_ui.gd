@@ -44,6 +44,11 @@ func test_show_message_go() -> void:
 	assert_eq(_msg.text, "GO!")
 
 
+func test_show_message_mode_select() -> void:
+	_ui.show_message("mode_select")
+	assert_eq(_msg.text, "1  VS CPU\n2  TWO PLAYERS")
+
+
 func test_show_message_p1_scores() -> void:
 	_ui.show_message("p1_scores")
 	assert_eq(_msg.text, "PLAYER 1 SCORES")

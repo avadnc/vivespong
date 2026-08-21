@@ -1,4 +1,5 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+/build/
 Godot-MCP-6bd23f6a832ac5e75798d4b68e42155c6e3a187a/

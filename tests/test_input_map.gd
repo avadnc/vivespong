@@ -51,6 +51,16 @@ func test_start_has_enter() -> void:
 	assert_true(_action_has_key("start", KEY_ENTER), "KEY_ENTER")
 
 
+func test_one_player_action_has_key_1() -> void:
+	assert_true(InputMap.has_action("one_player"), "one_player")
+	assert_true(_action_has_key("one_player", KEY_1), "KEY_1")
+
+
+func test_two_player_action_has_key_2() -> void:
+	assert_true(InputMap.has_action("two_player"), "two_player")
+	assert_true(_action_has_key("two_player", KEY_2), "KEY_2")
+
+
 func test_deadzone_on_joy_axes() -> void:
 	var axis_actions: Array[String] = [
 		"player1_left", "player1_right", "player2_left", "player2_right",

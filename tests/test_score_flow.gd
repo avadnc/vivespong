@@ -159,8 +159,46 @@ func test_start_only_works_when_won() -> void:
 	assert_eq(main.match_state.player1_score, 0)
 	assert_eq(main.match_state.player2_score, 0)
 	assert_eq(main.match_state.winner, 0)
+	assert_eq(main.phase, main.MatchPhase.MODE_SELECT)
+	assert_false(main._p1.input_enabled)
+	assert_false(main._p2.input_enabled)
+	assert_eq(main._hud._message.text, "1  VS CPU\n2  TWO PLAYERS")
+	assert_false(main._ball.is_live)
+
+
+func test_show_mode_select_does_not_advance() -> void:
+	var main = _wired_main()
+	main.show_mode_select()
+	assert_eq(main.phase, main.MatchPhase.MODE_SELECT)
+	main.tick_phase(10.0)
+	assert_eq(main.phase, main.MatchPhase.MODE_SELECT)
+	assert_eq(main._hud._message.text, "1  VS CPU\n2  TWO PLAYERS")
+
+
+func test_select_one_player_starts_vs_cpu() -> void:
+	var main = _wired_main()
+	main.show_mode_select()
+	main.select_player_count(1)
+	assert_true(main.vs_cpu)
+	assert_eq(main.phase, main.MatchPhase.READY)
+	assert_true(main._p1.input_enabled)
+	assert_false(main._p2.input_enabled)
+	assert_eq(main._hud._message.text, "READY")
+
+
+func test_select_two_players_enables_p2() -> void:
+	var main = _wired_main()
+	main.show_mode_select()
+	main.select_player_count(2)
+	assert_false(main.vs_cpu)
 	assert_eq(main.phase, main.MatchPhase.READY)
 	assert_true(main._p1.input_enabled)
 	assert_true(main._p2.input_enabled)
-	assert_eq(main._hud._message.text, "READY")
-	assert_false(main._ball.is_live)
+
+
+func test_select_player_count_ignored_when_playing() -> void:
+	var main = _wired_main()
+	main.begin_match()
+	main.select_player_count(1)
+	assert_false(main.vs_cpu)
+	assert_eq(main.phase, main.MatchPhase.READY)
